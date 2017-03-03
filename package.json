@@ -1,6 +1,6 @@
 {
   "name": "slang-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This is the cli form of slang from @mnlsn it will watch your files and then push them up to AEM",
   "main": "index.js",
   "scripts": {

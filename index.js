@@ -18,6 +18,7 @@ var ignore   = [
     /.java/,
     /.xml/
 ];
+var userIgnore = [];
 
 
 program
@@ -27,7 +28,7 @@ program
   .option('-u, --user [username]', 'User name for auth', 'admin')
   .option('-pass, --password [password]', 'Add the user password [admin]', 'admin')
   .option('-b, --both', 'Push files to both author and publish', false)
-  .option('-i, --ignore [ignoreFiles]', 'A comma seperated list of files or file types to ignore', '')
+  .option('-i, --ignore [ignoreFiles]', 'A comma seperated list of files or file types to ignore', null)
   .parse(process.argv);
 
 console.log(`Sending files to localhost:${program.port} with credentials ${program.user}:${program.password}`);
@@ -43,9 +44,17 @@ setTimeout( function() {
 }, 2000 );
 
 
-program.ignore.split(',').forEach( function( val, index ) {
-    ignore.push( new RegExp( val ) );
-} )
+if( program.ignore ){
+    userIgnore = program.ignore.split(',');
+
+    userIgnore.forEach( function( val, index ) {
+        ignore.push( new RegExp( val ) );
+    } )
+
+    console.log(ignore);
+}
+
+
 
 author.setOptions({
     port     : program.portAuthor,
