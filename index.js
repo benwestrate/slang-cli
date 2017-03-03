@@ -6,54 +6,106 @@
 
 var program  = require('commander');
 var chokidar = require('chokidar');
-var slang    = require('aem-slang');
+var author   = require('aem-slang');
+var publish  = require('aem-slang');
+var package  = require('./package.json');
+var ready    = false;
+var ignore   = [
+    /(^|[\/\\])\../,
+    /node_modules/,
+    /package.json/,
+    /\/target\//,
+    /.java/,
+    /.xml/
+];
 
 
 program
-  .version('0.0.1')
-  .option('-p, --port [port]', 'Port to push files to [4503]', '4503')
+  .version(package.version)
+  .option('-p, --port [port]', 'Port to push files to default is publish 4503', '4503')
+  .option('-pA, --portAuthor [port]', 'Port to push files to author', '4502')
   .option('-u, --user [username]', 'User name for auth', 'admin')
   .option('-pass, --password [password]', 'Add the user password [admin]', 'admin')
+  .option('-b, --both', 'Push files to both author and publish', false)
+  .option('-i, --ignore [ignoreFiles]', 'A comma seperated list of files or file types to ignore', '')
   .parse(process.argv);
 
 console.log(`Sending files to localhost:${program.port} with credentials ${program.user}:${program.password}`);
 
+if( program.both ){
+    console.log(`Sending files to localhost:${program.portAuthor} with credentials ${program.user}:${program.password}`);
+}
 
-slang.setOptions({
+// This is to allow us to listen to the Add event so that when new files are added they
+// will be added to AEM.
+setTimeout( function() {
+    ready = true;
+}, 2000 );
+
+
+program.ignore.split(',').forEach( function( val, index ) {
+    ignore.push( new RegExp( val ) );
+} )
+
+author.setOptions({
+    port     : program.portAuthor,
+    host     : 'localhost',
+    username : program.user,
+    password : program.password
+});
+
+publish.setOptions({
     port     : program.port,
     host     : 'localhost',
     username : program.user,
     password : program.password
 });
 
-// One-liner for current directory, ignores .dotfiles
-chokidar.watch('.', {ignored: [
-    /(^|[\/\\])\../,
-    'node_modules',
-    'package.json'
-]}).on('all', (event, path) => {
-
+chokidar.watch('.',
+    {
+        ignored: ignore
+    }
+).on('all', (event, path) => {
 
     switch (event) {
         case "change":
-            pushFileToAEM( path )
+            if( ready ) pushFileToAEM( path )
+            break;
+        case "add":
+            if( ready ) pushFileToAEM( path )
             break;
         default:
-
+            // do nothing
     }
-
 
 });
 
 
 function pushFileToAEM( path ) {
 
-    slang.up(path).then(function(status) {
-        // any action for after successful upload
-        // console.log( status );
-    }).catch(function(err) {
-        // handle error
-        console.error( err );
-    });
+    if( program.both ){
+        author.up(path).then(function(status) {
+            // any action for after successful upload
+            // console.log( status );
+        }).catch(function(err) {
+            // handle error
+            console.error( err );
+        });
+        publish.up(path).then(function(status) {
+            // any action for after successful upload
+            // console.log( status );
+        }).catch(function(err) {
+            // handle error
+            console.error( err );
+        });
+    } else {
+        publish.up(path).then(function(status) {
+            // any action for after successful upload
+            // console.log( status );
+        }).catch(function(err) {
+            // handle error
+            console.error( err );
+        });
+    }
 
 }
