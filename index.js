@@ -33,10 +33,10 @@ program
   .option('-ad, --authDomain [localhost]', 'Specify a path to use for publish. Defaults to localhost', 'localhost')
   .parse(process.argv);
 
-console.log(`Sending files to localhost:${program.port} with credentials ${program.user}:${program.password}`);
+console.log(`Sending files to ${program.pubDomain}:${program.port} with credentials ${program.user}:${program.password}`);
 
 if( program.both ){
-    console.log(`Sending files to localhost:${program.portAuthor} with credentials ${program.user}:${program.password}`);
+    console.log(`Sending files to ${program.authDomain}:${program.portAuthor} with credentials ${program.user}:${program.password}`);
 }
 
 // This is to allow us to listen to the Add event so that when new files are added they
