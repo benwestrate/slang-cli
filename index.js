@@ -29,6 +29,8 @@ program
   .option('-pass, --password [password]', 'Add the user password [admin]', 'admin')
   .option('-b, --both', 'Push files to both author and publish', false)
   .option('-i, --ignore [ignoreFiles]', 'A comma seperated list of files or file types to ignore', null)
+  .option('-pd, --pubDomain [localhost]', 'Specify a path to use for publish. Defaults to localhost', 'localhost')
+  .option('-ad, --authDomain [localhost]', 'Specify a path to use for publish. Defaults to localhost', 'localhost')
   .parse(process.argv);
 
 console.log(`Sending files to localhost:${program.port} with credentials ${program.user}:${program.password}`);
@@ -58,14 +60,14 @@ if( program.ignore ){
 
 author.setOptions({
     port     : program.portAuthor,
-    host     : 'localhost',
+    host     : program.authDomain,
     username : program.user,
     password : program.password
 });
 
 publish.setOptions({
     port     : program.port,
-    host     : 'localhost',
+    host     : program.pubDomain,
     username : program.user,
     password : program.password
 });
