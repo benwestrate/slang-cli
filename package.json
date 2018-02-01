@@ -1,19 +1,23 @@
 {
-  "name": "slang-cli",
-  "version": "1.1.0",
-  "description": "This is the cli form of slang from @mnlsn it will watch your files and then push them up to AEM",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": {
-    "slang-cli": "./bin/slang-cli.js"
-  },
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "aem-slang": "^1.0.1",
-    "chokidar": "^1.6.1",
-    "commander": "^2.9.0"
-  }
+    "name": "slang-cli",
+    "version": "1.1.1",
+    "description": "This is the cli form of slang from @mnlsn it will watch your files and then push them up to AEM",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "bin": {
+        "slang-cli": "./bin/slang-cli.js"
+    },
+    "author": "",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/benwestrate/slang-cli"
+    },
+    "dependencies": {
+        "aem-slang": "^1.0.1",
+        "chokidar": "^1.6.1",
+        "commander": "^2.9.0"
+    }
 }
