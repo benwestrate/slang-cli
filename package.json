@@ -1,13 +1,13 @@
 {
   "name": "slang-cli",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "This is the cli form of slang from @mnlsn it will watch your files and then push them up to AEM",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "slang-cli": "index.js"
+    "slang-cli": "./bin/slang-cli.js"
   },
   "author": "",
   "license": "MIT",

@@ -21,3 +21,8 @@ Options:
     -ad, --authDomain [localhost]  Specify a path to use for publish. Defaults to localhost
     -h, --help                     output usage information
 ```
+
+
+## Change Log
+- v1.1.0 -- 02-01-2018
+Added the ability to install this module locally to be used via npm run without being globally installed.
