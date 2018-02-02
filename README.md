@@ -24,5 +24,5 @@ Options:
 
 
 ## Change Log
-- v1.1.0 -- 02-01-2018
+- v1.1.3 -- 02-01-2018
 Added the ability to install this module locally to be used via npm run without being globally installed.

@@ -3,12 +3,11 @@
 /**
  * Module dependencies.
  */
-
+var fs       = require('fs');
 var program  = require('commander');
 var chokidar = require('chokidar');
 var author   = require('aem-slang');
 var publish  = require('aem-slang');
-var package  = require('./package.json');
 var ready    = false;
 var ignore   = [
     /(^|[\/\\])\../,
@@ -19,10 +18,10 @@ var ignore   = [
     /.xml/
 ];
 var userIgnore = [];
-
+var path = '.';
 
 program
-  .version(package.version)
+  .version('1.1.6')
   .option('-p, --port [port]', 'Port to push files to default is publish 4503', '4503')
   .option('-pA, --portAuthor [port]', 'Port to push files to author', '4502')
   .option('-u, --user [username]', 'User name for auth', 'admin')
@@ -31,6 +30,7 @@ program
   .option('-i, --ignore [ignoreFiles]', 'A comma seperated list of files or file types to ignore', null)
   .option('-pd, --pubDomain [localhost]', 'Specify a path to use for publish. Defaults to localhost', 'localhost')
   .option('-ad, --authDomain [localhost]', 'Specify a path to use for publish. Defaults to localhost', 'localhost')
+  .option('-w, --watchPath [.]', 'Specify root path to watch for file changes', '.')
   .parse(process.argv);
 
 console.log(`Sending files to ${program.pubDomain}:${program.port} with credentials ${program.user}:${program.password}`);
@@ -72,7 +72,11 @@ publish.setOptions({
     password : program.password
 });
 
-chokidar.watch('.',
+ if( !fs.existsSync(program.watchPath) ){
+     throw "Path passed to cli does not exist : " + program.watchPath
+ }
+
+chokidar.watch( __dirname + '/' + program.watchPath,
     {
         ignored: ignore
     }
