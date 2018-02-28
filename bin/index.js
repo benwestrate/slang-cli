@@ -30,7 +30,7 @@ program
   .option('-i, --ignore [ignoreFiles]', 'A comma seperated list of files or file types to ignore', null)
   .option('-pd, --pubDomain [localhost]', 'Specify a path to use for publish. Defaults to localhost', 'localhost')
   .option('-ad, --authDomain [localhost]', 'Specify a path to use for publish. Defaults to localhost', 'localhost')
-  .option('-w, --watchPath [.]', 'Specify root path to watch for file changes', '.')
+  .option('-w, --watchPath [ ]', 'Specify root path to watch for file changes', '')
   .parse(process.argv);
 
 console.log(`Sending files to ${program.pubDomain}:${program.port} with credentials ${program.user}:${program.password}`);
@@ -56,6 +56,8 @@ if( program.ignore ){
     console.log(ignore);
 }
 
+let pathToWatch = '.'
+if( program.watchPath !== '' ) pathToWatch = __dirname + '/' + program.watchPath
 
 
 author.setOptions({
@@ -72,11 +74,11 @@ publish.setOptions({
     password : program.password
 });
 
- if( !fs.existsSync(program.watchPath) ){
-     throw "Path passed to cli does not exist : " + program.watchPath
+ if( !fs.existsSync(pathToWatch) ){
+     throw "Path passed to cli does not exist : " + pathToWatch
  }
 
-chokidar.watch( __dirname + '/' + program.watchPath,
+chokidar.watch( pathToWatch,
     {
         ignored: ignore
     }

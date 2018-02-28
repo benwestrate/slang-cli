@@ -24,5 +24,8 @@ Options:
 
 
 ## Change Log
-- v1.1.3 -- 02-01-2018
+- v1.1.9-v1.1.13 -- 02-01-2018
+Fix for chokidar exiting early
+
+- v1.1.8 -- 02-01-2018
 Added the ability to install this module locally to be used via npm run without being globally installed.
